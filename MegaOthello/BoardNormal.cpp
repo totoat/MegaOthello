@@ -22,8 +22,11 @@ BoardNormal::~BoardNormal()
 {
 }
 
-void BoardNormal::TurnChange()
+bool BoardNormal::TurnChange()
+//ターン交代。ついでに次に置く方がパスしなくても大丈夫かも返す。
 {
+	bool result=false;
+
 	if (turn == black) {
 		turn = white;
 	}
@@ -31,10 +34,23 @@ void BoardNormal::TurnChange()
 	{
 		turn = black;
 	}
+
+	for (int i = 0; i <= GetBoardSize(); i++) {
+		for (int j = 0; j <= GetBoardSize(); j++) {
+			if (put(i,j,true) == true) {
+				result = true;
+			}
+		}
+	}
+	
+
+	return result;
+	
 }
 
 BorW BoardNormal::GetBoard(int x, int y) {
-	return board[x][y];
+		return board[x][y];
+
 }
 
 void BoardNormal::SetBoard(int x, int y, BorW bw) {
@@ -71,7 +87,7 @@ bool BoardNormal::put(int x, int y, bool checkOnly ) {
 
 
 	//置きたい場所が空白かどうか
-	if (GetBoard(x,y) != 0) {
+	if (GetBoard(x, y) != 0 || (x == -1 || y == -1)) {
 		return false;
 	}
 
@@ -253,11 +269,13 @@ bool BoardNormal::put(int x, int y, bool checkOnly ) {
 	if (result[0] == 1 || result[1] == 1 || result[2] == 1 || result[3] == 1 || result[4] == 1 || result[5] == 1 || result[6] == 1 || result[7] == 1) {
 		if (checkOnly==false) {
 			SetBoard(x, y, turn);
+			
+			pass = 0;
 		}
-		return 1;
+		return true;
 	}
 	else {
-		return 0;
+		return false;
 	}
 
 }
@@ -300,4 +318,8 @@ int BoardNormal::check(BorW board, int c, int turn) {
 	}
 	
 	return 4;
+}
+
+void BoardNormal::finish() {
+	turn = none;
 }

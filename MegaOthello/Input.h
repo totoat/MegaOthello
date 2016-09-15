@@ -1,6 +1,7 @@
 #pragma once
 class Input
 {
+//マウスからの情報を取得するクラス。
 public:
 	Input();
 	~Input();
