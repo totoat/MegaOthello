@@ -14,6 +14,8 @@ public:
 	bool CheckMouseLeave();
 	int GetPointX();
 	int GetPointY();
+	void SetInputFlag(bool input);
+	bool GetInputFlag();
 
 private:
 	BoardNormal board;
@@ -21,4 +23,5 @@ private:
 	int pointY;
 	bool click = false;
 	bool clickOld = false;
+	bool inputFlag = true;
 };

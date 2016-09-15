@@ -10,6 +10,8 @@ void Init();
 const int SCREEN_SIZE_X = 1280;
 const int SCREEN_SIZE_Y = 720;
 const int COLORBIT = 16;
+
+const int MESSAGEWAIT = 180;
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -18,15 +20,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Hand hand;
 	char TurnMsg[20];
 
-	bool click = false;
+	int timer = 0;
+	bool messageFlag = false;
 
 	Init();
 	
 	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+
 		input.GetMouseInfo();
 		hand.SetClick(input.getMouseClick());
 
-		DrawBox(0, 0, 720, 720, GetColor(0, 255, 0), TRUE);//緑の背景
+		DrawBox(0, 0, 720, 720, GetColor(0, 255, 0), TRUE);//盤面の背景
 
 		DrawBox(721, 0, 1280, 720, GetColor(150, 150, 255), TRUE);
 
@@ -54,6 +58,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DrawFormatString(800, 45, GetColor(0, 0, 0), "黒　%d個",board.CountStone(black));
 		DrawFormatString(800, 125, GetColor(0, 0, 0), "白　%d個",board.CountStone(white));
 
+		//DrawFormatString(800, 45, GetColor(0, 0, 0), "X　%d個",input.getMouseX());
+		//DrawFormatString(800, 125, GetColor(0, 0, 0), "Y　%d個",input.getMouseY());
+
 		if (board.GetTurn() == black) {
 			sprintf_s(TurnMsg, "黒の番です");
 		}
@@ -79,20 +86,37 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 		}
 
-		
+		if (messageFlag == true) {
+			DrawBox(576, 320, 704, 384, GetColor(0, 255, 255), true);
+			DrawString(576, 320, "パス", GetColor(0, 0, 0));
+
+			timer++;
+			if (timer > MESSAGEWAIT) {
+				messageFlag = false;
+				hand.SetInputFlag(true);
+				timer = 0;
+			}
+
+		}
 
 		if (hand.CheckMouseDown() == true) {
 			if (board.put(hand.GetPointX(), hand.GetPointY())==true) {
 				if (board.TurnChange() == false) {
 					if (board.TurnChange() == false) {
-						if (board.GetTurn() == black) {
+						if (board.CountStone(black) > board.CountStone(white)) {
 							sprintf_s(TurnMsg, "黒の勝ちです");
 						}
-						else if (board.GetTurn() == white) {
+						else if (board.CountStone(black) > board.CountStone(white)) {
 							sprintf_s(TurnMsg, "白の勝ちです");
+						}else{
+							sprintf_s(TurnMsg, "引き分けです");
 						}
 						board.finish();
 						//break;
+					
+					}else{
+						hand.SetInputFlag(false);
+						messageFlag = true;
 					}
 				}
 			}

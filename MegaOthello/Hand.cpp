@@ -30,18 +30,24 @@ void Hand::SetClick(bool input) {
 }
 
 bool Hand::CheckMouseDown() {
-	if (clickOld == false && click == true) {
-		return true;
-	}else{
-		return false;
+	if (inputFlag == true) {
+		if (clickOld == false && click == true) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
 
 bool Hand::CheckMouseLeave() {
-	if (clickOld == true && click == false) {
-		return true;
-	}else{
-		return false;
+	if (inputFlag == true) {
+		if (clickOld == true && click == false) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
 
@@ -51,4 +57,12 @@ int Hand::GetPointX() {
 
 int Hand::GetPointY() {
 	return pointY;
+}
+
+void Hand::SetInputFlag(bool input) {
+	inputFlag = input;
+}
+
+bool Hand::GetInputFlag() {
+	return inputFlag;
 }

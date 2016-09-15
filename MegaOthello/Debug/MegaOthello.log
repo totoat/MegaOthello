@@ -1,5 +1,5 @@
 ﻿  Main.cpp
-c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(73): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(76): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(77): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(80): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(83): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\owner\プログラム\自作プログラム\megaothello\megaothello\main.cpp(84): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   MegaOthello.vcxproj -> C:\Users\Owner\プログラム\自作プログラム\MegaOthello\Debug\MegaOthello.exe
