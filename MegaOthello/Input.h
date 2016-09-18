@@ -1,10 +1,7 @@
 #pragma once
 class Input
 {
-<<<<<<< HEAD
 //マウスからの情報を取得するクラス。
-=======
->>>>>>> origin/master
 public:
 	Input();
 	~Input();

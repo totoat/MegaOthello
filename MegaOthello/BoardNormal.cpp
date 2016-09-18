@@ -3,7 +3,6 @@
 
 BoardNormal::BoardNormal()
 {
-<<<<<<< HEAD
 }
 
 BoardNormal::~BoardNormal()
@@ -17,13 +16,6 @@ void BoardNormal::reset() {
 	for (int i = 0; i < boardsize+1; i++) {
 		for (int j = 0; j < boardsize+1; j++) {
 			SetBoard(i, j, none);
-=======
-	turn = black;
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			SetBoard(i,j,none);
->>>>>>> origin/master
 			if ((i == 4 && j == 3) || (i == 3 && j == 4)) {
 				SetBoard(i, j, black);
 			}
@@ -34,7 +26,6 @@ void BoardNormal::reset() {
 	}
 }
 
-<<<<<<< HEAD
 void BoardNormal::resetMurora(){
 	turn = black;
 	boardsize = 9;
@@ -60,14 +51,6 @@ bool BoardNormal::TurnChange()
 {
 	bool result = false;
 
-=======
-BoardNormal::~BoardNormal()
-{
-}
-
-void BoardNormal::TurnChange()
-{
->>>>>>> origin/master
 	if (turn == black) {
 		turn = white;
 	}
@@ -75,7 +58,6 @@ void BoardNormal::TurnChange()
 	{
 		turn = black;
 	}
-<<<<<<< HEAD
 
 	for (int i = 0; i <= GetBoardSize(); i++) {
 		for (int j = 0; j <= GetBoardSize(); j++) {
@@ -88,26 +70,16 @@ void BoardNormal::TurnChange()
 
 	return result;
 
-=======
->>>>>>> origin/master
 }
 
 BorW BoardNormal::GetBoard(int x, int y) {
 	return board[x][y];
-<<<<<<< HEAD
 
 }
 
 void BoardNormal::SetBoard(int x, int y, BorW bw) {
 
 	board[x][y] = bw;
-=======
-}
-
-void BoardNormal::SetBoard(int x, int y, BorW bw) {
-	
-		board[x][y] = bw;
->>>>>>> origin/master
 
 }
 
@@ -121,11 +93,7 @@ int BoardNormal::GetBoardSize() {
 
 int BoardNormal::CountStone(BorW color) {
 	int result = 0;
-<<<<<<< HEAD
 	for (int i = 0; i <= GetBoardSize(); i++) {
-=======
-	for (int i = 0; i <= GetBoardSize(); i++){
->>>>>>> origin/master
 		for (int j = 0; j <= GetBoardSize(); j++) {
 			if (GetBoard(i, j) == color) {
 				result++;
@@ -136,7 +104,6 @@ int BoardNormal::CountStone(BorW color) {
 	return result;
 }
 
-<<<<<<< HEAD
 bool BoardNormal::put(int x, int y, bool checkOnly, BorW turn) {
 
 	int result[8] = { 2 }; //それぞれ８方向の判定結果。真上から時計回り(0:すぐ隣が同じ色だからおけない,1:おける,2:壁のせいでおけない,3:空白のせいでおけない)0,2,3の区別は動作テストでのみ用いる。
@@ -148,16 +115,6 @@ bool BoardNormal::put(int x, int y, bool checkOnly, BorW turn) {
 
 	//置きたい場所が空白かどうか
 	if (GetBoard(x, y) != 0 || (x == -1 || y == -1)) {
-=======
-bool BoardNormal::put(int x, int y, bool checkOnly ) {
-	
-	int result[8] = { 2 }; //それぞれ８方向の判定結果。真上から時計回り(0:すぐ隣が同じ色だからおけない,1:おける,2:壁のせいでおけない,3:空白のせいでおけない)0,2,3の区別は動作テストでのみ用いる。
-	//bool result[8];
-
-
-	//置きたい場所が空白かどうか
-	if (GetBoard(x,y) != 0) {
->>>>>>> origin/master
 		return false;
 	}
 
@@ -337,7 +294,6 @@ bool BoardNormal::put(int x, int y, bool checkOnly ) {
 	}
 
 	if (result[0] == 1 || result[1] == 1 || result[2] == 1 || result[3] == 1 || result[4] == 1 || result[5] == 1 || result[6] == 1 || result[7] == 1) {
-<<<<<<< HEAD
 		if (checkOnly == false) {
 			SetBoard(x, y, turn);
 
@@ -347,15 +303,6 @@ bool BoardNormal::put(int x, int y, bool checkOnly ) {
 	}
 	else {
 		return false;
-=======
-		if (checkOnly==false) {
-			SetBoard(x, y, turn);
-		}
-		return 1;
-	}
-	else {
-		return 0;
->>>>>>> origin/master
 	}
 
 }
@@ -396,7 +343,6 @@ int BoardNormal::check(BorW board, int c, int turn) {
 			return 2;
 		}
 	}
-<<<<<<< HEAD
 
 	return 4;
 }
@@ -568,8 +514,3 @@ void BoardNormal::Com1Murora() {
 	put(memox, memoy);
 
 }
-=======
-	
-	return 4;
-}
->>>>>>> origin/master
