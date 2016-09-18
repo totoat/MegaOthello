@@ -2,7 +2,8 @@
 enum BorW {
 	none,
 	black,
-	white
+	white,
+	gray
 };
 
 class BoardNormal
@@ -11,18 +12,22 @@ class BoardNormal
 public:
 	BoardNormal();
 	~BoardNormal();
+	void reset();
+	void BoardNormal::resetMurora();
 	bool TurnChange();
 	BorW GetBoard(int x, int y);
 	void SetBoard(int x, int y, BorW bw);
 	BorW GetTurn();
 	int GetBoardSize();
 	int CountStone(BorW color);
-	bool put(int x, int y, bool checkOnly = false);
+	bool put(int x, int y, bool checkOnly = false, BorW turn = none);
 	void finish();
+	void Com1();
+	void Com1Murora();
 
 
 private:
-	BorW board[8][8];
+	BorW board[16][16];
 	BorW turn;
 	int boardsize = 7;
 	int pass=0;

@@ -10,12 +10,12 @@ Hand::~Hand()
 {
 }
 
-void Hand::CheckPoint(int MouseX,int MouseY) {
+void Hand::CheckPoint(int MouseX,int MouseY,int boardsize) {
 	pointX = -1;
 	pointY = -1;
-	for (int i = 0; i < board.GetBoardSize() + 1; i++) {
-		for (int j = 0; j < (board.GetBoardSize() + 1); j++) {
-			if (i*(720 / (board.GetBoardSize() + 1)) < MouseX && j*(720 / (board.GetBoardSize() + 1)) < MouseY && MouseX < (i + 1)*(720 / (board.GetBoardSize() + 1)) && MouseY < (j + 1)*(720 / (board.GetBoardSize() + 1))) {
+	for (int i = 0; i < boardsize+1; i++) {
+		for (int j = 0; j < (boardsize+1); j++) {
+			if (i*(720 / (boardsize+1)) < MouseX && j*(720 / (boardsize+1)) < MouseY && MouseX < (i + 1)*(720 / (boardsize+1)) && MouseY < (j + 1)*(720 / (boardsize+1))) {
 				 
 				pointX = i;
 				pointY = j;

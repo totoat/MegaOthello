@@ -1,14 +1,11 @@
 #pragma once
-#include"BoardNormal.h"
-
-
 class Hand
 {
 //Input関数で得た情報を使って、プレイヤーがどこに置くかを決めるクラス
 public:
 	Hand();
 	~Hand();
-	void CheckPoint(int MouseX, int MouseY);
+	void CheckPoint(int MouseX, int MouseY,int boardsize);
 	void SetClick(bool input);
 	bool CheckMouseDown();
 	bool CheckMouseLeave();
@@ -18,7 +15,6 @@ public:
 	bool GetInputFlag();
 
 private:
-	BoardNormal board;
 	int pointX;
 	int pointY;
 	bool click = false;
