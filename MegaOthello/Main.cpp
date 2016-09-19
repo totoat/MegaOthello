@@ -27,12 +27,14 @@ ComType comtype = com1murora;
 
 void Title();
 void Game();
+void Pause();
 
 
 Input input;
 BoardNormal board;
 Hand hand;
 
+const bool WINDOWMODE = true;
 const int SCREEN_SIZE_X = 1280;
 const int SCREEN_SIZE_Y = 720;
 const int COLORBIT = 16;
@@ -58,6 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			Game();
 			break;
 		case PAUSE:
+			Pause();
 			break;
 		default:
 			break;
@@ -77,7 +80,7 @@ void Init() {
 	// 画面モードの設定
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, COLORBIT);//画面サイズの指定
 	//SetBackgroundColor(255, 255, 255);
-	ChangeWindowMode(true);//ウィンドウモード設定
+	ChangeWindowMode(WINDOWMODE);//ウィンドウモード設定
 
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
@@ -116,7 +119,7 @@ void Title() {
 	DrawStringToHandle((SCREEN_SIZE_X / 2) - (128 * 2), 50, "リバーシ", GetColor(0, 0, 0), font128);
 
 	//ボタンその1
-	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280 < input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 280 < input.getMouseY()&&input.getMouseY() < 420) {
+	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20< input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 280 < input.getMouseY()&&input.getMouseY() < 420) {
 		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 420, GetColor(255, 255, 0), true);
 		point = 1;
 	}else{
@@ -126,7 +129,7 @@ void Title() {
 	DrawStringToHandle((SCREEN_SIZE_X / 2) - (100 * 3.5), 300, button1, GetColor(0, 0, 0), font100);
 
 	//ボタンその2
-	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280 < input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 480 < input.getMouseY() && input.getMouseY() < 620) {
+	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20< input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 480 < input.getMouseY() && input.getMouseY() < 620) {
 		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 480, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 620, GetColor(255, 255, 0), true);
 		point = 2;
 	}else{
@@ -135,10 +138,30 @@ void Title() {
 	DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 480, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 620, GetColor(0, 0, 0), false);
 	DrawStringToHandle((SCREEN_SIZE_X / 2) - (100 * 3.5), 500, button2, GetColor(0, 0, 0), font100);
 
+	//戻るボタン
+	if (step != 1) {
+		if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 3.5) - 10 < input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 1.5) + 10 && 480 + 64 - 10 < input.getMouseY() && input.getMouseY() < 620) {
+			DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 3.5) - 10  , 480 + 64 - 10, (SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 1.5) , 620, GetColor(255, 255, 0), true);
+			point = 3;
+		}
+		else {
+			DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 3.5) - 10, 480 + 64 - 10, (SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 1.5), 620, GetColor(0, 255, 0), true);
+
+		}
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 3.5) - 10, 480 + 64 - 10, (SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 1.5), 620, GetColor(0,0 , 0), false);
+		DrawString((SCREEN_SIZE_X / 2) - (100 * 3.5) - (64 * 3.5), 480 + 64, "戻る", GetColor(0, 0, 0));
+
+	}
+
 	if (input.getMouseClick() == true && oldclick == false) {
+		if (point == 3) {
+			step--;
+		}
+
 		switch (step)
 		{
-		case 1:if (point == 1) {
+		case 1:
+			if (point == 1) {
 				com = true;
 			}
 			else if (point == 2) {
@@ -217,11 +240,14 @@ void Title() {
 
 			step = 1;
 
+			sprintf_s(button1, "ひとりでプレイ");
+			sprintf_s(button2, "ふたりでプレイ");
 			
 			scene = GAME;
 
 			break;
 		}
+		
 	}
 
 	point = 0;
@@ -233,6 +259,7 @@ void Game() {
 
 	static int timer = 0;
 	static bool messageFlag = false;
+	static bool button;
 
 	
 	//盤面描画----------------------------------------------------
@@ -310,8 +337,11 @@ void Game() {
 	}
 	DrawFormatString(800, 300, GetColor(0, 0, 0), TurnMsg);
 
-
-	DrawBox(990, 590, 1202, 674, GetColor(255, 50, 50), TRUE);
+	if (990 < input.getMouseX() && input.getMouseX() < 1202 && 590 < input.getMouseY() && input.getMouseY() < 674) {
+		DrawBox(990, 590, 1202, 674, GetColor(255, 255, 50), TRUE);
+	}else{
+		DrawBox(990, 590, 1202, 674, GetColor(255, 50, 50), TRUE);
+	}
 	DrawBox(990, 590, 1202, 674, GetColor(0, 0, 0), FALSE);
 	DrawFormatString(1000, 600, GetColor(0, 0, 0), "ポーズ");
 
@@ -386,6 +416,7 @@ void Game() {
 					else {
 						sprintf_s(TurnMsg, "引き分けです");
 					}
+					hand.SetInputFlag(false);
 					board.finish();
 					//break;
 
@@ -395,12 +426,83 @@ void Game() {
 					messageFlag = true;
 				}
 			}
-		}
 
-		if (board.GetTurn() == ComFlag) {
-			hand.SetInputFlag(false);
+			if (board.GetTurn() == ComFlag) {
+				hand.SetInputFlag(false);
+			}
+		}
+		
+	}
+	if (hand.CheckMouseDownNoCheckFlag() == true) {
+		if (990 < input.getMouseX() && input.getMouseX() < 1202 && 590 < input.getMouseY() && input.getMouseY() < 674) {
+			scene = PAUSE;
 		}
 	}
-
 }
 
+void Pause() {
+	static int point = 0;
+	static bool oldclick = false;
+
+	DrawBox(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, GetColor(0, 100, 0), true);
+
+	//ボタンその1
+	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20< input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 80 < input.getMouseY() && input.getMouseY() < 220) {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 80, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 220, GetColor(255, 255, 0), true);
+		point = 1;
+	}
+	else {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 80, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 220, GetColor(0, 255, 0), true);
+	}
+	DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 80, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 220, GetColor(0, 0, 0), false);
+	DrawStringToHandle((SCREEN_SIZE_X / 2) - (100 * 3.5), 100, "ゲームを続ける", GetColor(0, 0, 0), font100);
+
+
+	//ボタンその2
+	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20 < input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 280 < input.getMouseY() && input.getMouseY() < 420) {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 420, GetColor(255, 255, 0), true);
+		point = 2;
+	}
+	else {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 420, GetColor(0, 255, 0), true);
+	}
+	DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 280, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 420, GetColor(0, 0, 0), false);
+	DrawStringToHandle((SCREEN_SIZE_X / 2) - (100 * 3.5), 300, "最初から始める", GetColor(0, 0, 0), font100);
+
+	//ボタンその2
+	if ((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20 < input.getMouseX() && input.getMouseX() < (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20 && 480 < input.getMouseY() && input.getMouseY() < 620) {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 480, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 620, GetColor(255, 255, 0), true);
+		point = 3;
+	}
+	else {
+		DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 480, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 620, GetColor(0, 255, 0), true);
+	}
+	DrawBox((SCREEN_SIZE_X / 2) - (100 * 3.5) - 20, 480, (SCREEN_SIZE_X / 2) + (100 * 3.5) + 20, 620, GetColor(0, 0, 0), false);
+	DrawStringToHandle((SCREEN_SIZE_X / 2) - (100 * 3.5), 500, "タイトルに戻る", GetColor(0, 0, 0), font100);
+
+	if (input.getMouseClick() == true && oldclick == false) {
+		switch (point)
+		{
+		case 1:
+			scene = GAME;
+			break;
+		case 2:
+			hand.SetInputFlag(true);
+			if (board.GetBoardSize() == 7) {
+				board.reset();
+			}else{
+				board.resetMurora();
+			}
+			if (ComFlag == black) {
+				hand.SetInputFlag(false);
+			}
+			scene = GAME;
+			break;
+		case 3:
+			scene = TITLE;
+			break;
+		}
+	}
+	point = 0;
+	oldclick = input.getMouseClick();
+}

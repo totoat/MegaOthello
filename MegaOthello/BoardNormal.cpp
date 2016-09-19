@@ -348,7 +348,7 @@ int BoardNormal::check(BorW board, int c, int turn) {
 }
 
 void BoardNormal::finish() {
-	turn = none;
+	turn = gray;
 }
 
 void BoardNormal::Com1() {

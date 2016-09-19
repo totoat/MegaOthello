@@ -38,6 +38,7 @@ bool Hand::CheckMouseDown() {
 			return false;
 		}
 	}
+	return false;
 }
 
 bool Hand::CheckMouseLeave() {
@@ -48,6 +49,16 @@ bool Hand::CheckMouseLeave() {
 		else {
 			return false;
 		}
+	}
+	return false;
+}
+
+bool Hand::CheckMouseDownNoCheckFlag() {
+	if (clickOld == false && click == true) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 

@@ -9,6 +9,7 @@ public:
 	void SetClick(bool input);
 	bool CheckMouseDown();
 	bool CheckMouseLeave();
+	bool CheckMouseDownNoCheckFlag();
 	int GetPointX();
 	int GetPointY();
 	void SetInputFlag(bool input);
