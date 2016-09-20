@@ -34,7 +34,7 @@ Input input;
 BoardNormal board;
 Hand hand;
 
-const bool WINDOWMODE = true;
+const bool WINDOWMODE = false;
 const int SCREEN_SIZE_X = 1280;
 const int SCREEN_SIZE_Y = 720;
 const int COLORBIT = 16;
@@ -219,6 +219,7 @@ void Title() {
 			sprintf_s(button2, " å„çUÇ≈énÇﬂÇÈ");
 			break;
 		case 4:
+			hand.SetInputFlag(true);
 			if (com == true) {
 				ComFlag = comturn;
 				if (ComFlag == black) {
