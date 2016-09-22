@@ -20,6 +20,10 @@ void Init();
 
 int font128;
 int font100;
+int bgm;
+int putsound;
+int buttonsound;
+int cancelsound;
 
 enum scene scene = TITLE;
 BorW ComFlag = white;
@@ -34,10 +38,15 @@ Input input;
 BoardNormal board;
 Hand hand;
 
-const bool WINDOWMODE = false;
+const bool WINDOWMODE = true;
 const int SCREEN_SIZE_X = 1280;
 const int SCREEN_SIZE_Y = 720;
 const int COLORBIT = 16;
+
+const char thinking[] = "thinking.wav";
+const char pachin[] = "pachin4.wav";
+const char pochi[] = "pochi.wav";
+const char cancel[] = "pochib.wav";
 
 const int MESSAGEWAIT = 120;
 const int COMWAIT = 60;
@@ -96,6 +105,11 @@ void Init() {
 	font128 = CreateFontToHandle(NULL, 128, 3);
 	font100 = CreateFontToHandle(NULL, 100, 3);
 
+	bgm = LoadSoundMem(thinking);
+	SetLoopPosSoundMem(105600, bgm);
+	putsound = LoadSoundMem(pachin);
+	buttonsound = LoadSoundMem(pochi);
+	cancelsound = LoadSoundMem(cancel);
 
 	board.resetMurora();
 }
@@ -243,10 +257,18 @@ void Title() {
 
 			sprintf_s(button1, "ひとりでプレイ");
 			sprintf_s(button2, "ふたりでプレイ");
-			
+
+			PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 			scene = GAME;
 
 			break;
+		}
+
+		if (point == 1 || point == 2) {
+			PlaySoundMem(buttonsound, DX_PLAYTYPE_BACK);
+		}
+		else if (point == 3) {
+			PlaySoundMem(cancelsound, DX_PLAYTYPE_BACK);
 		}
 		
 	}
@@ -349,18 +371,25 @@ void Game() {
 	
 
 	if (messageFlag == true) {
-		DrawBox(576, 320, 704, 384, GetColor(0, 255, 255), true);
-		DrawBox(576, 320, 704, 384, GetColor(0, 0, 0), false);
-		DrawString(576, 320, "パス", GetColor(0, 0, 0));
+		if (board.GetTurn() != gray) {
+			DrawBox(SCREEN_SIZE_X / 2 - 100 - 10, SCREEN_SIZE_Y / 2 - 100 / 2 - 10, SCREEN_SIZE_X / 2 + 100 + 10, SCREEN_SIZE_Y / 2 + 100 / 2 + 10, GetColor(0, 255, 255), true);
+			DrawBox(SCREEN_SIZE_X / 2 - 100 - 10, SCREEN_SIZE_Y / 2 - 100 / 2 - 10, SCREEN_SIZE_X / 2 + 100 + 10, SCREEN_SIZE_Y / 2 + 100 / 2 + 10, GetColor(0, 0, 0), false);
+			DrawStringToHandle(SCREEN_SIZE_X / 2 - 100, SCREEN_SIZE_Y / 2 - 100 / 2, "パス", GetColor(0, 0, 0), font100);
+		}else{
+			DrawBox(SCREEN_SIZE_X / 2 - 100 * 2.5 - 10, SCREEN_SIZE_Y / 2 - 100 / 2 - 10, SCREEN_SIZE_X / 2 + 100 * 2.5 + 10, SCREEN_SIZE_Y / 2 + 100 / 2 + 10, GetColor(0, 255, 255), true);
+			DrawBox(SCREEN_SIZE_X / 2 - 100 * 2.5 - 10, SCREEN_SIZE_Y / 2 - 100 / 2 - 10, SCREEN_SIZE_X / 2 + 100 * 2.5 + 10, SCREEN_SIZE_Y / 2 + 100 / 2 + 10, GetColor(0, 0, 0), false);
+			DrawStringToHandle(SCREEN_SIZE_X / 2 - 100*2.5, SCREEN_SIZE_Y / 2 - 100 / 2, "ゲーム終了", GetColor(0, 0, 0), font100);
 
+		}
 		timer++;
 		if (timer > MESSAGEWAIT) {
 			messageFlag = false;
-			if (board.GetTurn() != ComFlag) {
+			if (board.GetTurn() != ComFlag && board.GetTurn() != gray) {
 				hand.SetInputFlag(true);
 			}
 			timer = 0;
 		}
+		
 
 	}
 	else if (messageFlag == false && (board.GetTurn() == ComFlag)) {
@@ -371,6 +400,7 @@ void Game() {
 			}else if(comtype==com1murora){
 				board.Com1Murora();
 			}
+			PlaySoundMem(putsound, DX_PLAYTYPE_BACK);
 			/*if (1) {
 				if (0) {*/
 			if (board.TurnChange() == false) {
@@ -385,6 +415,7 @@ void Game() {
 					else {
 						sprintf_s(TurnMsg, "引き分けです");
 					}
+					messageFlag = true;
 					board.finish();
 					//break;
 
@@ -406,6 +437,7 @@ void Game() {
 
 	if (hand.CheckMouseDown() == true) {
 		if (board.put(hand.GetPointX(), hand.GetPointY()) == true) {
+			PlaySoundMem(putsound, DX_PLAYTYPE_BACK);
 			if (board.TurnChange() == false) {
 				if (board.TurnChange() == false) {
 					if (board.CountStone(black) > board.CountStone(white)) {
@@ -417,6 +449,7 @@ void Game() {
 					else {
 						sprintf_s(TurnMsg, "引き分けです");
 					}
+					messageFlag = true;
 					hand.SetInputFlag(false);
 					board.finish();
 					//break;
@@ -436,6 +469,7 @@ void Game() {
 	}
 	if (hand.CheckMouseDownNoCheckFlag() == true) {
 		if (990 < input.getMouseX() && input.getMouseX() < 1202 && 590 < input.getMouseY() && input.getMouseY() < 674) {
+			PlaySoundMem(buttonsound, DX_PLAYTYPE_BACK);
 			scene = PAUSE;
 		}
 	}
@@ -485,9 +519,11 @@ void Pause() {
 		switch (point)
 		{
 		case 1:
+			PlaySoundMem(cancelsound, DX_PLAYTYPE_BACK);
 			scene = GAME;
 			break;
 		case 2:
+			PlaySoundMem(buttonsound, DX_PLAYTYPE_BACK);
 			hand.SetInputFlag(true);
 			if (board.GetBoardSize() == 7) {
 				board.reset();
@@ -500,6 +536,8 @@ void Pause() {
 			scene = GAME;
 			break;
 		case 3:
+			PlaySoundMem(cancelsound, DX_PLAYTYPE_BACK);
+			StopSoundMem(bgm);
 			scene = TITLE;
 			break;
 		}
