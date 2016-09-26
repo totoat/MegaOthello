@@ -514,3 +514,167 @@ void BoardNormal::Com1Murora() {
 	put(memox, memoy);
 
 }
+
+void BoardNormal::Com2() {
+	//COMの思考ルーチン。自分のおける場所がどれくらいあるか、相手のおける場所がどれくらいあるかを基準に考える。相手のおける場所をなくす傾向強め
+	//たぶん少なくともりんなよりは強い
+	int boardcopy[16][16];//シミュレート用の盤面のコピー
+	int mytecount, usertecount;//置ける場所がどれくらいあるか覚えとく
+	int score[16][16] = { 1000 };//マスごとの得点。これが一番高いところに置く。
+	int memox, memoy, memos = 1000;//スコア比較用変数
+
+	BorW userturn;
+
+	if (GetTurn() == black) {
+		userturn = white;
+	}
+	else if (GetTurn() == white) {
+		userturn = black;
+	}
+
+	for (int j = 0; j<8; j++) {
+		for (int i = 0; i<8; i++) {
+			score[i][j] = -1001;
+		}
+	}
+
+	for (int y = 0; y<boardsize + 1; y++) {
+		for (int x = 0; x<boardsize + 1; x++) {
+			//いじくってもいいように盤面をコピーする
+			for (int j = 0; j<boardsize + 1; j++) {
+				for (int i = 0; i<boardsize + 1; i++) {
+					boardcopy[i][j] = GetBoard(i, j);
+				}
+			}
+			//コピーした盤面に試しに置いてみて自分と相手のおける場所を数える
+			mytecount = 0;
+			usertecount = 0;
+
+
+
+			if (put(x, y, true) == 1) {
+
+				for (int j = 0; j<boardsize + 1; j++) {
+					for (int i = 0; i<boardsize + 1; i++) {
+						if (put(i, j, true, GetTurn())) {
+							mytecount++;
+						}
+						if (put(i, j, true), userturn) {
+							usertecount++;
+						}
+
+					}
+				}
+				//採点
+				score[x][y] = mytecount - 2 * usertecount;
+				if ((x == 0 || x == 7) && (y == 0 || y == 7)) {
+					score[x][y] += 20;
+				}
+				else if ((x <= 1 || x >= 6) && (y <= 1 || y >= 6)) {
+					score[x][y] -= 20;
+				}
+			}
+			else {
+				score[x][y] = 1000;
+			}
+
+		}
+	}
+
+	//点数比較
+	for (int y = 0; y<boardsize + 1; y++) {
+		for (int x = 0; x<boardsize + 1; x++) {
+			//printf("%d %d %d \n",x,y,score[x][y]);//動作確認用
+			if (score[x][y] < memos) {
+				memox = x;
+				memoy = y;
+				memos = score[x][y];
+			}
+		}
+	}
+
+	put(memox, memoy);
+
+}
+
+void BoardNormal::Com2Murora() {
+	//COMの思考ルーチン。自分のおける場所がどれくらいあるか、相手のおける場所がどれくらいあるかを基準に考える。相手のおける場所をなくす傾向強め
+	//たぶん少なくともりんなよりは強い
+	int boardcopy[16][16];//シミュレート用の盤面のコピー
+	int mytecount, usertecount;//置ける場所がどれくらいあるか覚えとく
+	int score[16][16] = { 1000 };//マスごとの得点。これが一番高いところに置く。
+	int memox, memoy, memos = 1000;//スコア比較用変数
+
+	BorW userturn;
+
+	if (GetTurn() == black) {
+		userturn = white;
+	}
+	else if (GetTurn() == white) {
+		userturn = black;
+	}
+
+	for (int j = 0; j<8; j++) {
+		for (int i = 0; i<8; i++) {
+			score[i][j] = -1001;
+		}
+	}
+
+	for (int y = 0; y<boardsize + 1; y++) {
+		for (int x = 0; x<boardsize + 1; x++) {
+			//いじくってもいいように盤面をコピーする
+			for (int j = 0; j<boardsize + 1; j++) {
+				for (int i = 0; i<boardsize + 1; i++) {
+					boardcopy[i][j] = GetBoard(i, j);
+				}
+			}
+			//コピーした盤面に試しに置いてみて自分と相手のおける場所を数える
+			mytecount = 0;
+			usertecount = 0;
+
+
+
+			if (put(x, y, true) == 1) {
+
+				for (int j = 0; j<boardsize + 1; j++) {
+					for (int i = 0; i<boardsize + 1; i++) {
+						if (put(i, j, true, GetTurn())) {
+							mytecount++;
+						}
+						if (put(i, j, true), userturn) {
+							usertecount++;
+						}
+
+					}
+				}
+				//採点
+				score[x][y] = mytecount - 2 * usertecount;
+				if (((x == 1 || x == 8) && (y == 0 || y == 9)) || ((x == 0 || x == 9) && (y == 1 || y == 8))) {
+					score[x][y] += 20;
+				}
+				else if (((x <= 2 || x >= 7) && (y <= 1 || y >= 8)) || ((x <= 1 || x >= 8) && (y <= 2 || y >= 7))) {
+					score[x][y] -= 20;
+				}
+			}
+			else {
+				score[x][y] = 1000;
+			}
+
+		}
+	}
+
+	//点数比較
+	for (int y = 0; y<boardsize + 1; y++) {
+		for (int x = 0; x<boardsize + 1; x++) {
+			//printf("%d %d %d \n",x,y,score[x][y]);//動作確認用
+			if (score[x][y]<memos) {
+				memox = x;
+				memoy = y;
+				memos = score[x][y];
+			}
+		}
+	}
+
+	put(memox, memoy);
+
+}

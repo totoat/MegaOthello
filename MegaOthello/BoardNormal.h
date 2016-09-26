@@ -24,6 +24,8 @@ public:
 	void finish();
 	void Com1();
 	void Com1Murora();
+	void Com2();
+	void Com2Murora();
 
 
 private:

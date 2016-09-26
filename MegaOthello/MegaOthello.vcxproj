@@ -161,6 +161,17 @@
     <ClInclude Include="Hand.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\pachin4.wav" />
+    <Media Include="sound\pochi.wav" />
+    <Media Include="sound\pochib.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
