@@ -40,15 +40,22 @@ Input input;
 BoardNormal board;
 Hand hand;
 
-const bool WINDOWMODE = false;
+const bool WINDOWMODE = true;
 const int SCREEN_SIZE_X = 1280;
 const int SCREEN_SIZE_Y = 720;
 const int COLORBIT = 16;
 
+<<<<<<< HEAD
 const char thinking[] = "sound\\thinking.wav";
 const char pachin[] = "sound\\pachin4.wav";
 const char pochi[] = "sound\\pochi.wav";
 const char cancel[] = "sound\\pochib.wav";
+=======
+const char thinking[] = "thinking.wav";
+const char pachin[] = "pachin4.wav";
+const char pochi[] = "pochi.wav";
+const char cancel[] = "pochib.wav";
+>>>>>>> origin/master
 
 const int MESSAGEWAIT = 120;
 const int COMWAIT = 60;
@@ -434,6 +441,7 @@ void Game() {
 			}else if(comtype==com1murora){
 				board.Com1Murora();
 			}
+<<<<<<< HEAD
 			else if (comtype == com2) {
 				board.Com2();
 			}
@@ -441,6 +449,9 @@ void Game() {
 				board.Com2Murora();
 			}
 			PlaySoundMem	(putsound, DX_PLAYTYPE_BACK);
+=======
+			PlaySoundMem(putsound, DX_PLAYTYPE_BACK);
+>>>>>>> origin/master
 			/*if (1) {
 				if (0) {*/
 			if (board.TurnChange() == false) {
@@ -509,10 +520,15 @@ void Game() {
 	}
 	if (hand.CheckMouseDownNoCheckFlag() == true) {
 		if (990 < input.getMouseX() && input.getMouseX() < 1202 && 590 < input.getMouseY() && input.getMouseY() < 674) {
+<<<<<<< HEAD
 			if (messageFlag == false) {
 				PlaySoundMem(buttonsound, DX_PLAYTYPE_BACK);
 				scene = PAUSE;
 			}
+=======
+			PlaySoundMem(buttonsound, DX_PLAYTYPE_BACK);
+			scene = PAUSE;
+>>>>>>> origin/master
 		}
 	}
 }
